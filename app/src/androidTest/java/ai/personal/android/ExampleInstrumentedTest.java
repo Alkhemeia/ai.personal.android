@@ -1,4 +1,4 @@
-package imrankst1221.website.in.webview;
+package ai.personal.android;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("imrankst1221.website.in.webview", appContext.getPackageName());
+        assertEquals("ai.personal.android", appContext.getPackageName());
     }
 }

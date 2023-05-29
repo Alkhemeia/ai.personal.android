@@ -1,4 +1,4 @@
-package imrankst1221.website.`in`.webview
+package ai.personal.android
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -26,13 +26,9 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import java.io.File
 import java.io.IOException
-import java.io.UnsupportedEncodingException
-import java.security.InvalidAlgorithmParameterException
-import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
-import java.security.spec.InvalidParameterSpecException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.crypto.*
@@ -43,7 +39,7 @@ class MainActivity : Activity() {
     internal var mLoaded = false
 
     // set your custom url here
-    internal var URL = "https://www.infixsoft.com/"
+    internal var URL = "https://app.personal.ai/login"
 
     //for attach files
     private var mCameraPhotoPath: String? = null
@@ -153,7 +149,7 @@ class MainActivity : Activity() {
         mWebView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
         mWebView.settings.domStorageEnabled = true
-        mWebView.settings.setAppCacheEnabled(true)
+        //mWebView.settings.setAppCacheEnabled(true)
         mWebView.settings.databaseEnabled = true
         //mWebView.getSettings().setDatabasePath(
         //        this.getFilesDir().getPath() + this.getPackageName() + "/databases/");
@@ -161,6 +157,7 @@ class MainActivity : Activity() {
         // this force use chromeWebClient
         mWebView.settings.setSupportMultipleWindows(false)
         mWebView.webViewClient = object : WebViewClient() {
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
 
                 Log.d(TAG, "URL: " + url!!)
@@ -232,7 +229,7 @@ class MainActivity : Activity() {
         mWebView.webChromeClient = object : WebChromeClient() {
             override fun onShowFileChooser(
                     webView: WebView, filePathCallback: ValueCallback<Array<Uri>>,
-                    fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
+                    fileChooserParams: FileChooserParams): Boolean {
                 if (mFilePathCallback != null) {
                     mFilePathCallback!!.onReceiveValue(null)
                 }
