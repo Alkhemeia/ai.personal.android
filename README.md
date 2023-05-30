@@ -1,6 +1,6 @@
 # personal.ai for Android
 ## Description
-Open Source Android Application for [personal.ai](https://personal.ai) developed in [Kotlin](https://developer.android.com/kotlin).
+Unofficial Open Source Android Application for [personal.ai](https://personal.ai) developed in [Kotlin](https://developer.android.com/kotlin).
 <br><br>
 ## Contact with me
 <a href="https://alkhemeia1062.personal.ai/" rel="nofollow">
