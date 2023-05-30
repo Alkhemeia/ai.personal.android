@@ -56,7 +56,6 @@ class MainActivity : Activity() {
     private lateinit var layoutWebview: RelativeLayout
     private lateinit var layoutNoInternet: RelativeLayout
 
-
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,6 +179,18 @@ class MainActivity : Activity() {
                     mWebView.visibility = View.GONE
                     layoutSplash.visibility = View.GONE
                     layoutNoInternet.visibility = View.VISIBLE
+                }
+
+                mWebView.addJavascriptInterface(JavaScriptInterface(mContext), "AndroidInterface")
+                mWebView.webViewClient = object : WebViewClient() {
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+                        mWebView.loadUrl("javascript:(function() { " +
+                                "Notification = function(title, options) { " +
+                                "   window.AndroidInterface.showNotification(title, options.body);" +
+                                "}" +
+                                "})()")
+                    }
                 }
 
                 return true
