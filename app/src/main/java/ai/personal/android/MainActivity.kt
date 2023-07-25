@@ -34,6 +34,7 @@ import java.util.*
 import javax.crypto.*
 import javax.crypto.spec.SecretKeySpec
 
+
 class MainActivity : Activity() {
     private lateinit var mContext: Context
     internal var mLoaded = false
@@ -47,7 +48,6 @@ class MainActivity : Activity() {
     internal var doubleBackToExitPressedOnce = false
 
 
-    //AdView adView;
     private lateinit var btnTryAgain: Button
     private lateinit var mWebView: WebView
     private lateinit var prgs: ProgressBar
@@ -55,6 +55,8 @@ class MainActivity : Activity() {
     private lateinit var layoutSplash: RelativeLayout
     private lateinit var layoutWebview: RelativeLayout
     private lateinit var layoutNoInternet: RelativeLayout
+
+    val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Pixel a5 Build/SP1A.210812.016) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/114.0.5735.130 Mobile Safari/537.36"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,23 +86,6 @@ class MainActivity : Activity() {
             layoutNoInternet.visibility = View.GONE
             requestForWebview()
         }
-
-        /** If you want to show adMob */
-        //showAdMob();
-
-        /*var secret: SecretKey? = null
-        val toEncrypt = URL
-        try {
-            secret = generateKey()
-            val toDecrypt = encryptMsg(toEncrypt, secret)
-
-            Log.d(TAG, toDecrypt.toString())
-
-            Log.d(TAG, decryptMsg(toDecrypt, secret))
-        } catch (e: Exception) {
-            Log.e(TAG, "" + e.message)
-        }*/
-
     }
 
 
@@ -146,6 +131,7 @@ class MainActivity : Activity() {
         mWebView.settings.setRenderPriority(RenderPriority.HIGH)
         mWebView.settings.cacheMode = WebSettings.LOAD_DEFAULT
         mWebView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        mWebView.settings.userAgentString = USER_AGENT;
 
         mWebView.settings.domStorageEnabled = true
         //mWebView.settings.setAppCacheEnabled(true)
@@ -368,21 +354,6 @@ class MainActivity : Activity() {
         return
     }
 
-    private fun showAdMob() {
-        /** Layout of AdMob screen View  */
-        /*layoutFooter = (LinearLayout) findViewById(R.id.layout_footer);
-          adView = (AdView) findViewById(R.id.adMob);
-          try {
-           if(internetCheck(mContext)){
-               //initializeAdMob();
-           }else{
-               Log.d("---------","--no internet-");
-           }
-       }catch (Exception ex){
-           Log.d("-----------", ""+ex);
-       }*/
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
             mWebView.goBack()
@@ -430,52 +401,6 @@ class MainActivity : Activity() {
             cipher!!.init(Cipher.DECRYPT_MODE, secret)
             return String(cipher.doFinal(cipherText), charset("UTF-8"))
         }*/
-
-
-        /**** Initial AdMob  */
-        /**
-         * private void initializeAdMob() {
-         * Log.d("----","Initial Call");
-         * adView.setVisibility(View.GONE);
-         * AdRequest adRequest = new AdRequest.Builder()
-         * .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-         * //.addTestDevice("F901B815E265F8281206A2CC49D4E432")
-         * .build();
-         * adView.setAdListener(new AdListener() {
-         * @Override
-         * public void onAdLoaded() {
-         * super.onAdLoaded();
-         * runOnUiThread(new Runnable() {
-         * @Override
-         * public void run() {
-         * adView.setVisibility(View.VISIBLE);
-         * Log.d("----","Visible");
-         * }
-         * });
-         * }
-         * });
-         * adView.loadAd(adRequest);
-         * }
-         */
-        /**
-         * public static void showAlertDialog(Context mContext, String mTitle, String mBody, int mImage){
-         * android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
-         * builder.setCancelable(true);
-         * builder.setIcon(mImage);
-         * if(mTitle.length()>0)
-         * builder.setTitle(mTitle);
-         * if(mBody.length()>0)
-         * builder.setTitle(mBody);
-         *
-         * builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
-         * @Override
-         * public void onClick(DialogInterface dialog, int which) {
-         * dialog.dismiss();
-         * }
-         * });
-         *
-         * builder.create().show();
-         * } */
 
         fun internetCheck(context: Context): Boolean {
             var available = false
