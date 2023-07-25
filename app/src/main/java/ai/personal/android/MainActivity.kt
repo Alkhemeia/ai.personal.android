@@ -38,15 +38,11 @@ import javax.crypto.spec.SecretKeySpec
 class MainActivity : Activity() {
     private lateinit var mContext: Context
     internal var mLoaded = false
-
-    // set your custom url here
-    internal var URL = "https://app.personal.ai/login"
-
-    //for attach files
-    private var mCameraPhotoPath: String? = null
-    private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
     internal var doubleBackToExitPressedOnce = false
 
+    internal var URL = "https://app.personal.ai/login"
+    internal val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Pixel a5 Build/SP1A.210812.016) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/114.0.5735.130 Mobile Safari/537.36"
+    internal var TAG = MainActivity::class.qualifiedName;
 
     private lateinit var btnTryAgain: Button
     private lateinit var mWebView: WebView
@@ -56,7 +52,9 @@ class MainActivity : Activity() {
     private lateinit var layoutWebview: RelativeLayout
     private lateinit var layoutNoInternet: RelativeLayout
 
-    val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Pixel a5 Build/SP1A.210812.016) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/114.0.5735.130 Mobile Safari/537.36"
+    //for attach files
+    private var mCameraPhotoPath: String? = null
+    private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +72,6 @@ class MainActivity : Activity() {
         layoutNoInternet = findViewById<View>(R.id.layout_no_internet) as RelativeLayout
         /** Layout of Splash screen View  */
         layoutSplash = findViewById<View>(R.id.layout_splash) as RelativeLayout
-
 
         //request for show website
         requestForWebview()
@@ -95,7 +92,6 @@ class MainActivity : Activity() {
             requestWebView()
             Handler().postDelayed({
                 prgs.visibility = View.VISIBLE
-                //viewSplash.getBackground().setAlpha(145);
                 mWebView.visibility = View.VISIBLE
             }, 3000)
 
@@ -124,20 +120,16 @@ class MainActivity : Activity() {
 
             return
         }
+
         mWebView.isFocusable = true
         mWebView.isFocusableInTouchMode = true
         mWebView.settings.javaScriptEnabled = true
         mWebView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        mWebView.settings.setRenderPriority(RenderPriority.HIGH)
         mWebView.settings.cacheMode = WebSettings.LOAD_DEFAULT
         mWebView.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         mWebView.settings.userAgentString = USER_AGENT;
-
         mWebView.settings.domStorageEnabled = true
-        //mWebView.settings.setAppCacheEnabled(true)
         mWebView.settings.databaseEnabled = true
-        //mWebView.getSettings().setDatabasePath(
-        //        this.getFilesDir().getPath() + this.getPackageName() + "/databases/");
 
         // this force use chromeWebClient
         mWebView.settings.setSupportMultipleWindows(false)
@@ -147,19 +139,7 @@ class MainActivity : Activity() {
 
                 Log.d(TAG, "URL: " + url!!)
                 if (internetCheck(mContext)) {
-                    // If you wnat to open url inside then use
                     view.loadUrl(url);
-
-                    // if you wanna open outside of app
-                    /*if (url.contains(URL)) {
-                        view.loadUrl(url)
-                        return false
-                    }else {
-                        // Otherwise, give the default behavior (open in browser)
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        startActivity(intent)
-                        return true
-                    }*/
                 } else {
                     prgs.visibility = View.GONE
                     mWebView.visibility = View.GONE
@@ -181,21 +161,6 @@ class MainActivity : Activity() {
 
                 return true
             }
-
-            /* @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if(internetCheck(mContext)) {
-                    mWebView.setVisibility(View.VISIBLE);
-                    layoutNoInternet.setVisibility(View.GONE);
-                    //view.loadUrl(url);
-                }else{
-                    prgs.setVisibility(View.GONE);
-                    mWebView.setVisibility(View.GONE);
-                    layoutSplash.setVisibility(View.GONE);
-                    layoutNoInternet.setVisibility(View.VISIBLE);
-                }
-                return false;
-            }*/
 
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
@@ -275,7 +240,6 @@ class MainActivity : Activity() {
                 return true
             }
         }
-
     }
 
     @Throws(IOException::class)
@@ -291,40 +255,6 @@ class MainActivity : Activity() {
                 storageDir      /* directory */
         )
     }
-
-
-    /**
-     * Convenience method to set some generic defaults for a
-     * given WebView
-     */
-    /*@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setUpWebViewDefaults(WebView webView) {
-        WebSettings settings = webView.getSettings();
-
-        // Enable Javascript
-        settings.setJavaScriptEnabled(true);
-
-        // Use WideViewport and Zoom out if there is no viewport defined
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-
-        // Enable pinch to zoom without the zoom buttons
-        settings.setBuiltInZoomControls(true);
-
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-            // Hide the zoom controls for HONEYCOMB+
-            settings.setDisplayZoomControls(false);
-        }
-
-        // Enable remote debugging via chrome://inspect
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-
-        // We set the WebViewClient to ensure links are consumed by the WebView rather
-        // than passed to a browser if it can
-        mWebView.setWebViewClient(new WebViewClient());
-    }*/
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
@@ -372,10 +302,8 @@ class MainActivity : Activity() {
     }
 
     companion object {
-        internal var TAG = "---MainActivity"
         val INPUT_FILE_REQUEST_CODE = 1
         val EXTRA_FROM_NOTIFICATION = "EXTRA_FROM_NOTIFICATION"
-
 
         //for security
         @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
@@ -420,5 +348,4 @@ class MainActivity : Activity() {
             return available
         }
     }
-
 }
